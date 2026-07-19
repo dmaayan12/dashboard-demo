@@ -1,0 +1,65 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* The financial timeline pane has its own custom drag bar (rendered right under the month
+   headers in FinancialTab.jsx), so the native browser scrollbar is hidden here - otherwise
+   two scrollbars would show up (the native one and the custom one). Scrolling itself
+   (wheel, keyboard, the custom bar) still works fine; only the native visual bar is hidden. */
+.financial-scroll-pane {
+  scrollbar-width: none;
+}
+
+.financial-scroll-pane::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.splash-pulse {
+  animation: splash-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes splash-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Swipe-in transition for month-block navigation in "עומס עובדים" - triggered by remounting
+   the block (React key={blockOffset}), direction set via the --swipe-offset CSS variable. */
+.employee-load-block {
+  animation: employee-load-swipe 0.3s ease-out;
+}
+
+@keyframes employee-load-swipe {
+  from {
+    opacity: 0;
+    transform: translateX(var(--swipe-offset, 70px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
