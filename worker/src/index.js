@@ -16,9 +16,16 @@ import { checkEntryCode } from './auth.js';
 
 // Narrowed to the real extension id once it's known (chrome-extension://<id>) - '*' is a
 // placeholder for local development only.
+// Access-Control-Allow-Methods matters here in a way it never did for the real Chrome extension
+// version of this project: an extension with host_permissions for this origin bypasses the
+// browser's CORS preflight entirely, so the real project never needed this header explicitly.
+// This demo runs as a plain website (no such exemption) - without it, the browser's preflight
+// blocks every PUT request (payment policy edits, attendance overrides, project-month-history
+// writes) even though Access-Control-Allow-Origin: '*' looks permissive enough at a glance.
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, X-Entry-Code',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
 };
 
 const json = (data, status = 200) =>

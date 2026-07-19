@@ -10,9 +10,7 @@ export function clearEntryCode() {
   currentEntryCode = null;
 }
 
-// TODO(deploy): replace with the actual demo Worker URL once it's created in Cloudflare - see
-// README.md's deployment section.
-export const WORKER_URL = 'https://dashboard-monday-demo.REPLACE-WITH-YOUR-SUBDOMAIN.workers.dev';
+export const WORKER_URL = 'https://dashboard-monday-demo.dmaayan12.workers.dev';
 
 export const QUOTA_ERROR_MESSAGE = 'הגעתם למספר הפעמים המקסימלי שאפשר לפנות לשרת היום. זה מתאפס אוטומטית בסביבות 3 בלילה - נסו שוב אחרי השעה הזו.';
 
