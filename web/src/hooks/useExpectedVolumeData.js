@@ -15,6 +15,14 @@ import { useDashboardData } from './useDashboardData';
 
 const monthKeyOf = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
+// Portfolio-demo-only: the real target/actual figures below come straight from the Backlog's own
+// debt/credit-adjusted engine (see buildMonthlyTargetsByProject), which is realistic but scaled to
+// a handful of already-near-completion demo projects - too small-looking for a studio-workload
+// showcase. The user explicitly approved this tab NOT needing to stay numerically tied to the
+// Backlog for demo purposes, so this multiplier just scales pace-hours up to a more studio-sized
+// figure without touching the underlying (still-correct) debt/credit calculation itself.
+const DEMO_PACE_HOURS_MULTIPLIER = 6;
+
 /**
  * Map<projectId, Map<monthKey, {target, actual}>> - per-month, per-project remaining-target and
  * this-month's-own-actual, reused directly from `useDashboardData` (the Backlog's own
@@ -38,7 +46,10 @@ const buildMonthlyTargetsByProject = (projects, today) => {
     project.effectiveTargetHoursByMonth.forEach((target, monthKey) => {
       if (monthKey < todayKey) return;
       const actual = monthKey === todayKey ? (project.monthlyActualHoursByMonth?.get(monthKey) || 0) : 0;
-      monthly.set(monthKey, { target: target || 0, actual });
+      monthly.set(monthKey, {
+        target: (target || 0) * DEMO_PACE_HOURS_MULTIPLIER,
+        actual: actual * DEMO_PACE_HOURS_MULTIPLIER,
+      });
     });
     result.set(project.id, monthly);
   });

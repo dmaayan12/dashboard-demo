@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Box, Tabs, HStack, Text } from '@chakra-ui/react';
-import { X } from 'lucide-react';
+import { Box, Tabs } from '@chakra-ui/react';
 import FinancialTab from './components/FinancialTab';
 import ExpectedVolumeTab from './components/workload/ExpectedVolumeTab';
 import EmployeeLoadTab from './components/workload/EmployeeLoadTab';
@@ -36,14 +35,7 @@ const DemoBanner = () => (
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('financial');
-  const [showProjectTab, setShowProjectTab] = useState(false);
   const [dashboardReady, setDashboardReady] = useState(false);
-
-  const closeProjectTab = (e) => {
-    e.stopPropagation();
-    setShowProjectTab(false);
-    setActiveTab((current) => (current === 'project-management' ? 'financial' : current));
-  };
 
   return (
     <>
@@ -63,50 +55,17 @@ const App = () => {
           unmountOnExit={false}
           dir="rtl"
         >
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            w="32px"
-            h="32px"
-            zIndex={200}
-            onDoubleClick={() => {
-              setShowProjectTab(true);
-              setActiveTab('project-management');
-            }}
-          />
           <Tabs.List dir="rtl" position="sticky" top={0} zIndex={100} bg="white">
             <Tabs.Trigger value="financial">באקלוג</Tabs.Trigger>
             <Tabs.Trigger value="volume">נפח עבודה צפוי</Tabs.Trigger>
             <Tabs.Trigger value="load">עומס עובדים</Tabs.Trigger>
-            {showProjectTab && (
-              <Tabs.Trigger value="project-management">
-                <HStack gap={1}>
-                  <Text>ניהול פרויקט</Text>
-                  <Box
-                    as="span"
-                    role="button"
-                    aria-label="סגור לשונית"
-                    display="flex"
-                    alignItems="center"
-                    p={0.5}
-                    borderRadius="sm"
-                    _hover={{ bg: 'blackAlpha.100' }}
-                    onClick={closeProjectTab}
-                  >
-                    <X size={12} />
-                  </Box>
-                </HStack>
-              </Tabs.Trigger>
-            )}
+            <Tabs.Trigger value="project-management">ניהול פרויקט</Tabs.Trigger>
           </Tabs.List>
           <Box>
             <Tabs.Content dir="rtl" value="financial" pt={0}><FinancialTab onReady={() => setDashboardReady(true)} /></Tabs.Content>
             <Tabs.Content dir="rtl" value="volume" pt={0}><ExpectedVolumeTab /></Tabs.Content>
             <Tabs.Content dir="rtl" value="load" pt={0}><EmployeeLoadTab /></Tabs.Content>
-            {showProjectTab && (
-              <Tabs.Content dir="rtl" value="project-management" pt={0}><ProjectManagementTab /></Tabs.Content>
-            )}
+            <Tabs.Content dir="rtl" value="project-management" pt={0}><ProjectManagementTab /></Tabs.Content>
           </Box>
         </Tabs.Root>
       </Box>

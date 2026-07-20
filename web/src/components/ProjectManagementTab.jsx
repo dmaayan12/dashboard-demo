@@ -12,6 +12,17 @@ import SplashScreen from './SplashScreen';
 
 const TAB_BAR_HEIGHT = '41px';
 
+// Portfolio-demo-only: the real sampleCount/taskCount here reflect this tab's small fictional
+// dataset (a handful of tasks per type) - too thin to showcase a studio processing real volume.
+// The user explicitly approved this tab not needing to stay numerically tied to anything real, so
+// displayed counts are a deterministic (stable across renders), varied stand-in figure instead of
+// the tiny real count - e.g. "347 tasks" for one type, "~1000" for another.
+const fakeTaskVolume = (key) => {
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  return 130 + (h % 1100);
+};
+
 // Not real production work - excluded from this whole screen (per the user's explicit request),
 // same two types calculateManagementOnlyProjectIds hides projects for in "נפח עבודה צפוי".
 const EXCLUDED_TASK_TYPES = ['פרילאנס', 'ניהול'];
@@ -61,7 +72,7 @@ const EmployeeBreakdown = ({ actualsItems, taskType, usersById, overallAvgHours 
                   <Table.Cell>
                     <HStack gap={2}>
                       <Text color={scheme.text} _dark={{ color: scheme.darkText }} fontWeight="medium">{avgHours.toFixed(1)} שעות</Text>
-                      <Text fontSize="xs" color={scheme.text} _dark={{ color: scheme.darkText }} opacity={0.75}>({taskCount} משימות)</Text>
+                      <Text fontSize="xs" color={scheme.text} _dark={{ color: scheme.darkText }} opacity={0.75}>({fakeTaskVolume(userId + taskType)} משימות)</Text>
                     </HStack>
                   </Table.Cell>
                 </Table.Row>
@@ -132,7 +143,7 @@ const ProjectManagementTab = () => {
                     <Table.Cell>
                       <HStack gap={2}>
                         <Text>{avgHours.toFixed(1)} שעות</Text>
-                        <Text fontSize="xs" color="fg.muted">({sampleCount} משימות)</Text>
+                        <Text fontSize="xs" color="fg.muted">({fakeTaskVolume(taskType)} משימות)</Text>
                       </HStack>
                     </Table.Cell>
                   </Table.Row>
